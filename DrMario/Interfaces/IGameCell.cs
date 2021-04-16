@@ -31,11 +31,6 @@ namespace DrMario.Interfaces
         void Clear();
 
         /// <summary>
-        /// Изменить ячейку
-        /// </summary>
-        void Change(GameCellType type = GameCellType.None, GameCellColor color = GameCellColor.None);
-
-        /// <summary>
         /// Может ли ячейка падать
         /// </summary>
         bool CanFallDown(IGameField gameField);
