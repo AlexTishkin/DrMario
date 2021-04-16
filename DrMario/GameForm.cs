@@ -38,7 +38,7 @@ namespace DrMario
             _game = _container.Resolve<IGame>();
             _gameDisplay = new Display.Display(_game, gamePictureBox);
 
-            // Управление
+            // Управление (Клавиатура)
             KeyDown += (sender, e) => _game.OnUserAction(KeyToGameKeyConvert.ToGameKey(e.KeyCode));
 
             // Таймер игры (Отрисовка - FPS)

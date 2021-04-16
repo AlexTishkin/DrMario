@@ -22,7 +22,7 @@ namespace DrMario.Implementations
         public IGameBlock FallingBlock { get; set; }
 
         /// <summary>
-        /// Падение одиночных ячеек
+        /// Падающие одиночные ячейки
         /// </summary>
         public IList<IGameCell> FallingCells { get; set; }
 
@@ -31,15 +31,25 @@ namespace DrMario.Implementations
         /// <summary>
         /// Идет игра!
         /// </summary>
-        private bool IsGame { get; set; }
+        private bool IsGameRunning { get; set; }
 
         public Game()
         {
-            VirusCount = 4;
+            RunNewGame(virusCount: 2);
+        }
+
+        public void RunNewGame(int virusCount)
+        {
             Field = new GameField();
+
+            VirusCount = virusCount;
             Field.InitializeViruses(VirusCount);
-            IsGame = true;
+
             InitializeNextBlock();
+
+            FallingBlock = null;
+            FallingCells = null;
+            IsGameRunning = true;
         }
 
         private void InitializeNextBlock()
@@ -50,14 +60,12 @@ namespace DrMario.Implementations
 
         public void GameTact()
         {
-            // Игра не началась!
-            if (!IsGame)
-                return;
+            if (!IsGameRunning) return;
 
             // Событие - победа
-            if (IsGame && Field.LeftViruses == 0)
+            if (IsGameRunning && Field.LeftViruses == 0)
             {
-                IsGame = false;
+                IsGameRunning = false;
                 MessageBox.Show("Победа! Нажмите любую клавишу для продолжения!");
                 return;
             }
@@ -72,11 +80,10 @@ namespace DrMario.Implementations
             // Появление следующего блока
             if (FallingBlock == null)
             {
-
                 // Чек -> Или поражение!
                 if (Field[0, 3].Type != GameCellType.None || Field[0, 4].Type != GameCellType.None)
                 {
-                    IsGame = false;
+                    IsGameRunning = false;
                     MessageBox.Show("Поражение! Нажмите любую клавишу для продолжения!");
                     return;
                 }
@@ -151,22 +158,11 @@ namespace DrMario.Implementations
             // Повторение!
         }
 
-        // /// //// ////////////////////////////////////////
-
         public void OnUserAction(GameKey key)
         {
-            // Победа / Поражение - Начать игру [ПЛОХАААА]
-            if (!IsGame)
-            {
-                FallingBlock = null;
-                FallingCells = null;
-                IsGame = true;
-
-                Field = new GameField();
-                Field.InitializeViruses(++VirusCount);
-                InitializeNextBlock();
-
-            }
+            // Следующая игра (Нажатие любой клавиши)
+            if (!IsGameRunning)
+                RunNewGame(++VirusCount);
 
             if (key == GameKey.NONE || FallingBlock == null)
                 return;
