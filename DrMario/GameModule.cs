@@ -9,9 +9,7 @@ namespace DrMario
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<GameForm>();
-
             builder.RegisterType<Game>().As<IGame>();
-            //builder.RegisterInstance(new GameField()).As<IGameField>();
         }
     }
 }

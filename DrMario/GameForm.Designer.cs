@@ -32,7 +32,6 @@ namespace DrMario
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(GameForm));
             this.gamePictureBox = new System.Windows.Forms.PictureBox();
-            this.gameTimer = new System.Windows.Forms.Timer(this.components);
             this.blockTimer = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.gamePictureBox)).BeginInit();
             this.SuspendLayout();
@@ -72,7 +71,6 @@ namespace DrMario
         #endregion
 
         private System.Windows.Forms.PictureBox gamePictureBox;
-        private System.Windows.Forms.Timer gameTimer;
         private System.Windows.Forms.Timer blockTimer;
     }
 }

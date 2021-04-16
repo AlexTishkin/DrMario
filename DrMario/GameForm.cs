@@ -2,7 +2,6 @@
 using DrMario.Display;
 using DrMario.Implementations;
 using DrMario.Interfaces;
-using System;
 using System.Windows.Forms;
 
 namespace DrMario
@@ -41,22 +40,14 @@ namespace DrMario
             // Управление (Клавиатура)
             KeyDown += (sender, e) => _game.OnUserAction(KeyToGameKeyConvert.ToGameKey(e.KeyCode));
 
-            // Таймер игры (Отрисовка - FPS)
-            gameTimer.Tick += (sender, e) => _gameDisplay.ShowGameState();
-            gameTimer.Interval = 1;
-            gameTimer.Start();
-
             // Такт игры (Падение блока, обвал блока и т.д)
             blockTimer.Tick += (sender, e) => _game.GameTact();
             blockTimer.Interval = 500;
+
+            // Отрисовка на основные события игры
+            KeyDown += (sender, e) => _gameDisplay.ShowGameState();
+            blockTimer.Tick += (sender, e) => _gameDisplay.ShowGameState();
             blockTimer.Start();
         }
-
-
-        /// <summary>
-        /// Закрытие приложения
-        /// </summary>
-        private void ExitButtonClick(object sender, EventArgs e) => Application.Exit();
-
     }
 }

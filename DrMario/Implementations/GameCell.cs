@@ -60,13 +60,13 @@ namespace DrMario.Implementations
             if (Type == GameCellType.None || Type == GameCellType.Virus)
                 return false;
 
-            // Если снизу связанные блок, то может падать
-            if (BindCell != null && gameField[Row + 1, Column] == BindCell && CanFallDownAnotherCell(BindCell, gameField))
-                return true;
+            //// Если снизу связанные блок, то может падать
+            //if (BindCell != null && gameField[Row + 1, Column] == BindCell && CanFallDownAnotherCell(BindCell, gameField))
+            //    return true;
 
-            // Снизу блок тоже падает
-            if (gameField[Row + 1, Column].Type != GameCellType.None && gameField[Row + 1, Column].CanFallDownSingleBlock(gameField))
-                return true;
+            //// Снизу блок тоже падает
+            //if (gameField[Row + 1, Column].Type != GameCellType.None && gameField[Row + 1, Column].CanFallDownSingleBlock(gameField))
+            //    return true;
 
             if (gameField[Row + 1, Column].Type != GameCellType.None)
                 return false;
