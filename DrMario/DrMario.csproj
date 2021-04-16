@@ -73,7 +73,9 @@
   <ItemGroup>
     <Compile Include="Enums\GameSide.cs" />
     <Compile Include="Extensions\ControlExtensions.cs" />
+    <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Extensions\MatrixExtensions.cs" />
+    <Compile Include="Factory\VirusImageFactory.cs" />
     <Compile Include="GameForm.cs">
       <SubType>Form</SubType>
     </Compile>
