@@ -55,6 +55,7 @@ namespace DrMario.Display
                     if (gameField[row, col].Type == GameCellType.Virus)
                     {
                         var virusImage = _virusImageFactory.CreateVirusImage(gameField[row, col].Color);
+                        _gameGrid[row, col].SetColor(GameCellColor.None);
                         ((PictureBox)_gameGrid[row, col]).Image = virusImage;
                     }
                 }

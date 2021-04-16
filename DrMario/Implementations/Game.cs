@@ -35,7 +35,7 @@ namespace DrMario.Implementations
 
         public Game()
         {
-            RunNewGame(virusCount: 2);
+            RunNewGame(virusCount: 4);
         }
 
         public void RunNewGame(int virusCount)
