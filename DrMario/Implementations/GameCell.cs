@@ -14,7 +14,11 @@ namespace DrMario.Implementations
 
         public IGameCell BindCell { get; set; }
 
-        public GameCell(int rowIndex, int columnIndex, GameCellType type = GameCellType.None, GameCellColor color = GameCellColor.None, IGameCell bindCell = null)
+        public GameCell(int rowIndex, 
+            int columnIndex, 
+            GameCellType type = GameCellType.None, 
+            GameCellColor color = GameCellColor.None, 
+            IGameCell bindCell = null)
         {
             Row = rowIndex;
             Column = columnIndex;
@@ -56,17 +60,9 @@ namespace DrMario.Implementations
             if (Row + 1 == gameField.Height)
                 return false;
 
-            //// Для падения одиночных блоков (Если это пустой блок или вирус, то это к нему отношения не имеет)
+            // Для падения одиночных блоков (Если это пустой блок или вирус, то это к нему отношения не имеет)
             if (Type == GameCellType.None || Type == GameCellType.Virus)
                 return false;
-
-            //// Если снизу связанные блок, то может падать
-            //if (BindCell != null && gameField[Row + 1, Column] == BindCell && CanFallDownAnotherCell(BindCell, gameField))
-            //    return true;
-
-            //// Снизу блок тоже падает
-            //if (gameField[Row + 1, Column].Type != GameCellType.None && gameField[Row + 1, Column].CanFallDownSingleBlock(gameField))
-            //    return true;
 
             if (gameField[Row + 1, Column].Type != GameCellType.None)
                 return false;

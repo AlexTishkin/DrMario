@@ -61,7 +61,6 @@ namespace DrMario.Implementations
 
         public void FallDown() => _state.FallDown();
 
-
         public bool CanTurn(IGameField field) => _state.CanTurn(field);
 
         public void Turn() => _state.Turn();

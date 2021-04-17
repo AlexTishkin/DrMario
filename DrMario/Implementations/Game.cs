@@ -29,7 +29,7 @@ namespace DrMario.Implementations
         private int VirusCount { get; set; }
 
         /// <summary>
-        /// Идет игра!
+        /// Игра запущена
         /// </summary>
         private bool IsGameRunning { get; set; }
 
@@ -66,7 +66,9 @@ namespace DrMario.Implementations
             if (IsGameRunning && Field.LeftViruses == 0)
             {
                 IsGameRunning = false;
-                MessageBox.Show("Победа! Нажмите любую клавишу для продолжения!");
+                DialogResult result = MessageBox.Show("Продолжить игру?", "Победа", MessageBoxButtons.YesNo);
+                if (result == DialogResult.Yes) RunNewGame(++VirusCount);
+                else Application.Exit();
                 return;
             }
 
@@ -84,7 +86,9 @@ namespace DrMario.Implementations
                 if (Field[0, 3].Type != GameCellType.None || Field[0, 4].Type != GameCellType.None)
                 {
                     IsGameRunning = false;
-                    MessageBox.Show("Поражение! Нажмите любую клавишу для продолжения!");
+                    DialogResult result = MessageBox.Show("Продолжить игру?", "Поражение", MessageBoxButtons.YesNo);
+                    if (result == DialogResult.Yes) RunNewGame(VirusCount);
+                    else Application.Exit();
                     return;
                 }
 
@@ -160,11 +164,7 @@ namespace DrMario.Implementations
 
         public void OnUserAction(GameKey key)
         {
-            // Следующая игра (Нажатие любой клавиши)
-            if (!IsGameRunning)
-                RunNewGame(++VirusCount);
-
-            if (key == GameKey.NONE || FallingBlock == null)
+            if (FallingBlock == null)
                 return;
 
             if (key == GameKey.LEFT)

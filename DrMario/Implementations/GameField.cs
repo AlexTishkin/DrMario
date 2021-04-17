@@ -169,10 +169,7 @@ namespace DrMario.Implementations
 
                     // Слепок на сетке 
                     if (!block.CanFallDownSingleBlock(this))
-                    {
                         this[block.Row, block.Column] = block;
-                    }
-
                 }
             }
         }
