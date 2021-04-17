@@ -1,6 +1,5 @@
 ﻿using DrMario.Implementations.GameBlockStates;
 using DrMario.Interfaces;
-using System;
 
 namespace DrMario.Implementations
 {
@@ -10,15 +9,8 @@ namespace DrMario.Implementations
         public IGameCell Right { get; set; }
         public GameCellType Type
         {
-            get
-            {
-                return Left.Type;
-            }
-            set
-            {
-                Right.Type = value;
-                Left.Type = value;
-            }
+            get => Left.Type;
+            set => Right.Type = Left.Type = value;
         }
 
         // Ссылка на текущее состояние Контекста
