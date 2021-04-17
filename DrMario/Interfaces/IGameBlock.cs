@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DrMario.Implementations.GameBlockStates;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +16,9 @@ namespace DrMario.Interfaces
 
         void SetRandomColor();
 
+        void TransitionTo(GameBlockState state);
         bool CanFallDown(IGameField field);
-        void FallDown(IGameField field);
+        void FallDown();
 
         bool CanTurn(IGameField field);
 

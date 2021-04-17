@@ -1,4 +1,5 @@
-﻿using DrMario.Interfaces;
+﻿using DrMario.Implementations.GameBlockStates;
+using DrMario.Interfaces;
 using System;
 
 namespace DrMario.Implementations
@@ -20,6 +21,9 @@ namespace DrMario.Implementations
             }
         }
 
+        // Ссылка на текущее состояние Контекста
+        private GameBlockState _state = null;
+
         public GameBlock(int row, int col)
         {
             Left = new GameCell(row, col, GameCellType.None, GameCellColor.None);
@@ -27,6 +31,7 @@ namespace DrMario.Implementations
 
             Left.BindCell = Right;
             Right.BindCell = Left;
+            TransitionTo(new FirstGameBlockState());
         }
 
         public GameBlock(IGameBlock nextBlock)
@@ -36,6 +41,7 @@ namespace DrMario.Implementations
 
             Left.BindCell = Right;
             Right.BindCell = Left;
+            TransitionTo(new FirstGameBlockState());
         }
 
         public void SetRandomColor()
@@ -44,119 +50,25 @@ namespace DrMario.Implementations
             Right.Color = GameColorFactory.CreateRandomColor();
         }
 
-        public bool CanFallDown(IGameField field) => Left.CanFallDown(field) && Right.CanFallDown(field);
-
-        public void FallDown(IGameField field)
+        // Контекст делегирует часть своего поведения текущему объекту Состояния
+        public void TransitionTo(GameBlockState state)
         {
-            Left.FallDown();
-            Right.FallDown();
+            _state = state;
+            _state.SetContext(this);
         }
 
-        public bool CanTurn(IGameField field)
-        {
-            int state = GetState();
+        public bool CanFallDown(IGameField field) => _state.CanFallDown(field);
 
-            switch (state)
-            {
-                case 1: return Left.Row > 0 && field[Left.Row - 1, Left.Column + 1].Type == GameCellType.None;
-                case 2: return Left.Column > 0 && field[Left.Row + 1, Left.Column - 1].Type == GameCellType.None;
-                case 3: return Right.Row > 0 && field[Right.Row - 1, Right.Column + 1].Type == GameCellType.None;
-                case 4: return Right.Column > 0 && field[Right.Row + 1, Right.Column - 1].Type == GameCellType.None;
-                default: return false;
-            }
-        }
+        public void FallDown() => _state.FallDown();
 
-        public void Turn()
-        {
-            int state = GetState();
 
-            switch (state)
-            {
-                case 1: Left.Row--; Left.Column++; break;
-                case 2: Left.Row++; Right.Column--; break;
-                case 3: Right.Row--; Right.Column++; break;
-                case 4: Right.Row++; Left.Column--; break;
-            }
-        }
+        public bool CanTurn(IGameField field) => _state.CanTurn(field);
 
-        public bool CanMove(GameSide side, IGameField field)
-        {
-            var state = GetState();
+        public void Turn() => _state.Turn();
 
-            switch (side)
-            {
-                case GameSide.Left:
-                    switch (state)
-                    {
-                        case 1: return Left.Column > 0 && field[Left.Row, Left.Column - 1].Type == GameCellType.None;
-                        case 2:
-                            if (Left.Column == 0 && Right.Column == 0) return false;
-                            return field[Left.Row, Left.Column - 1].Type == GameCellType.None
-                                && field[Right.Row, Right.Column - 1].Type == GameCellType.None;
+        public bool CanMove(GameSide side, IGameField field) => _state.CanMove(side, field);
 
-                        case 3: return Right.Column > 0 && field[Right.Row, Right.Column - 1].Type == GameCellType.None;
-                        case 4:
-                            if (Left.Column == 0 && Right.Column == 0) return false;
-                            return field[Left.Row, Left.Column - 1].Type == GameCellType.None
-                                && field[Right.Row, Right.Column - 1].Type == GameCellType.None;
-                    }
-                    break;
-                case GameSide.Right:
-                    switch (state)
-                    {
-                        case 1: return Right.Column + 1 < field.Width && field[Right.Row, Right.Column + 1].Type == GameCellType.None;
-                        case 2:
-                            if (Left.Column + 1 == field.Width && Right.Column + 1 == field.Width) return false;
-                            return field[Left.Row, Left.Column + 1].Type == GameCellType.None
-                                && field[Right.Row, Right.Column + 1].Type == GameCellType.None;
+        public void Move(GameSide side) => _state.Move(side);
 
-                        case 3: return Left.Column + 1 < field.Width && field[Left.Row, Left.Column + 1].Type == GameCellType.None;
-                        case 4:
-                            if (Left.Column + 1 == field.Width && Right.Column + 1 == field.Width) return false;
-                            return field[Left.Row, Left.Column + 1].Type == GameCellType.None
-                                && field[Right.Row, Right.Column + 1].Type == GameCellType.None;
-
-                    }
-                    break;
-                case GameSide.Down:
-                    return Left.CanFallDown(field) && Right.CanFallDown(field);
-            }
-
-            throw new Exception("Что-то пошло не так");
-        }
-
-        public void Move(GameSide side)
-        {
-            if (side == GameSide.Left)
-            {
-                Left.Column--;
-                Right.Column--;
-            }
-
-            if (side == GameSide.Right)
-            {
-                Left.Column++;
-                Right.Column++;
-            }
-
-            if (side == GameSide.Down)
-            {
-                Left.Row++;
-                Right.Row++;
-            }
-        }
-
-        /// <summary>
-        /// Возвращает состояние летящего блока (позицию)
-        /// 1      2      3      4
-        /// N N -> N L -> N N -> N R
-        /// L R    N R    R L    N L
-        /// </summary>
-        /// <returns></returns>
-        private int GetState()
-        {
-            if (Left.Row == Right.Row) return Left.Column < Right.Column ? 1 : 3;
-            return Left.Row < Right.Row ? 2 : 4;
-        }
     }
 }

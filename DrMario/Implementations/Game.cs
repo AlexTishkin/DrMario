@@ -118,7 +118,7 @@ namespace DrMario.Implementations
         /// </summary>
         private void FallBlock()
         {
-            FallingBlock.FallDown(Field);
+            FallingBlock.FallDown();
         }
 
         /// <summary>

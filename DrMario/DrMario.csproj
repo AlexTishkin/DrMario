@@ -88,6 +88,11 @@
     <Compile Include="Factory\VirusFactory.cs" />
     <Compile Include="Implementations\Game.cs" />
     <Compile Include="Implementations\GameBlock.cs" />
+    <Compile Include="Implementations\GameBlockStates\FourthGameBlockState.cs" />
+    <Compile Include="Implementations\GameBlockStates\ThirdGameBlockState.cs" />
+    <Compile Include="Implementations\GameBlockStates\SecondGameBlockState.cs" />
+    <Compile Include="Implementations\GameBlockStates\FirstGameBlockState.cs" />
+    <Compile Include="Implementations\GameBlockStates\GameBlockState.cs" />
     <Compile Include="Implementations\GameCell.cs" />
     <Compile Include="Display\Display.cs" />
     <Compile Include="Implementations\GameField.cs" />
