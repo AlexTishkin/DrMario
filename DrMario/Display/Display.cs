@@ -21,9 +21,12 @@ namespace DrMario.Display
         /// </summary>
         private readonly int _cellSize = 36;
 
+        private readonly PictureBox _window;
+
         public Display(IGame game, PictureBox window)
         {
             _game = game;
+            _window = window;
             _gameGrid = new DisplayGrid(window, _cellSize, _game.Field);
             _virusImageFactory = new VirusImageFactory(_cellSize);
         }
@@ -33,8 +36,8 @@ namespace DrMario.Display
             DisplayGridCell(_game.Field);
             DisplayNextBlock(_game.NextBlock);
             DisplayFallingBlock(_game.FallingBlock);
-
             DisplayFallingCells(_game.FallingCells);
+            _window.Refresh();
         }
 
         /// <summary>
